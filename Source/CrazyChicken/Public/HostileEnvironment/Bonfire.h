@@ -10,6 +10,7 @@ class UStaticMeshComponent;
 class USphereComponent;
 class ABasePlayer;
 class UHealthComponent;
+class ARawMaterial; 
 
 UCLASS()
 class CRAZYCHICKEN_API ABonfire : public AActor
@@ -28,18 +29,25 @@ public:
 	USphereComponent* SphereComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Radius = 3000;
+	USphereComponent* CollisionActivate;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Radius = 300;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FColor SphereColor = FColor::Red;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MaxHeatRecovery = 110.f;
+	float MaxTimeBurning = 110.f;
 
 private:
 
-	float CurrentHeatRecovery = 10.f;
+	UPROPERTY()
+	float TimeBurning = 100.f;
+
 	float CurrentBurningTime = 10.f;	
+	UPROPERTY()
+	FTimerHandle BurningTimerHandle;
 
 	UPROPERTY()
 	ABasePlayer* OverlapPlayer = nullptr;
@@ -52,11 +60,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 private:
 	bool IsBurning();
 	float CalculetRadius();
+	void Burning();
+
+	UFUNCTION()
+	void ProlongBurning(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
