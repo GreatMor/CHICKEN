@@ -19,32 +19,34 @@ class CRAZYCHICKEN_API ABonfire : public AActor
 
 public:
 
-	UPROPERTY(EditAnywhere, Category = "Components", meta = (ClampMax = "1000", ClampMin = "0"))
+	UPROPERTY(EditAnywhere, Category = "Settings", meta = (ClampMax = "1000", ClampMin = "0"))
 	float MaxBurningTime = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
+	float Radius = 300;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* BodyBonfire = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UStaticMeshComponent* SM_Fierwood = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UStaticMeshComponent* SM_Ash = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	USphereComponent* SphereComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USphereComponent* CollisionActivate;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Radius = 300;
+	USphereComponent* CollisionActivate;	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FColor SphereColor = FColor::Red;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MaxTimeBurning = 110.f;
-
 private:
 
-	UPROPERTY()
 	float TimeBurning = 100.f;
-
+	UPROPERTY()
 	float CurrentBurningTime = 10.f;	
 	UPROPERTY()
 	FTimerHandle BurningTimerHandle;
@@ -56,12 +58,16 @@ public:
 	// Sets default values for this actor's properties
 	ABonfire();
 
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentTimeBurning() const { return CurrentBurningTime; }
+
+	bool IsBurning();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-	bool IsBurning();
+	
 	float CalculetRadius();
 	void Burning();
 

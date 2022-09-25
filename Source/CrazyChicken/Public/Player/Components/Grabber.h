@@ -9,6 +9,7 @@
 #include "Engine/Classes/Components/InputComponent.h"
 #include "Grabber.generated.h"
 
+class ABasePlayer;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class CRAZYCHICKEN_API UGrabber : public UActorComponent
@@ -16,6 +17,7 @@ class CRAZYCHICKEN_API UGrabber : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	
 	// Sets default values for this component's properties
 	UGrabber();
 
@@ -24,14 +26,18 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	
+	AActor* GrabActor;
 
-	float Reach = 150.f;
+	float Reach = 50.f;
 
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 
 	UInputComponent* InputComponent = nullptr;
 
-	///Посылает луч и хватает то до чего достал 
+	UPROPERTY()
+	USkeletalMeshComponent* PlayerSkeletal;
+
 	void Grab();
 
 	void Release();
@@ -48,6 +54,7 @@ private:
 	FVector GetReachLineEnd();//Возвращает текущий конец линии досягаймости
 
 public:
+
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 };

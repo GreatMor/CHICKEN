@@ -6,7 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/Components/ShuterMovementComponent.h"
 #include "Player/Components/HealthComponent.h"
-#include "Components/TextRenderComponent.h"
+//#include "Components/TextRenderComponent.h"
 
 // Sets default values
 ABasePlayer::ABasePlayer(const FObjectInitializer& ObjInit) :Super(ObjInit.SetDefaultSubobjectClass<UShuterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -21,8 +21,8 @@ ABasePlayer::ABasePlayer(const FObjectInitializer& ObjInit) :Super(ObjInit.SetDe
     CameraComponent->SetupAttachment(SpringArmComponent);
     HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 
-    HealthTextRender = CreateDefaultSubobject<UTextRenderComponent>("HealthTextRender");
-    HealthTextRender->SetupAttachment(RootComponent);
+   /* HealthTextRender = CreateDefaultSubobject<UTextRenderComponent>("HealthTextRender");
+    HealthTextRender->SetupAttachment(RootComponent);*/
 }
 
 // Called when the game starts or when spawned
@@ -30,7 +30,7 @@ void ABasePlayer::BeginPlay()
 {
     Super::BeginPlay();
     check(HealthComponent);
-    check(HealthTextRender);
+   // check(HealthTextRender);
     check(GetCharacterMovement());
 
     OnHealthChange(HealthComponent->GetHealth());
@@ -118,7 +118,7 @@ void ABasePlayer::OnDeath()
 
 void ABasePlayer::OnHealthChange(float Health)
 {
-    HealthTextRender->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+    //HealthTextRender->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
 

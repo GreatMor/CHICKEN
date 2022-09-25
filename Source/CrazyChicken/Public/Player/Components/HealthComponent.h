@@ -18,6 +18,7 @@ public:
     // Sets default values for this component's properties
     UHealthComponent();
 
+    UFUNCTION(BlueprintCallable)
     float GetHealth()const { return Health; };
 
     UFUNCTION(BlueprintCallable)
@@ -28,7 +29,6 @@ public:
     FOnDeath OnDeath;
 
     FOnHealthChange OnHealthChange;
-
 
     UFUNCTION()
     void OnOverlapActivateSphere(AActor* MyOverlappedActor, AActor* OtherActor);
@@ -56,7 +56,7 @@ protected:
     float HealtDelay = 3;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health")
-    float HealthModifier = 5;
+    float HealthModifier = 1;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health")
     float HealtUpdateTiame = 0.4;

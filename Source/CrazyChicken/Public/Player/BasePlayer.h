@@ -9,7 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UHealthComponent;
-class UTextRenderComponent;
+//class UTextRenderComponent;
 
 UCLASS()
 class CRAZYCHICKEN_API ABasePlayer : public ACharacter
@@ -27,8 +27,13 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Movement")
     bool IsRunning() const;
 
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    bool GetGrab() const { return IsGrab;} ;
+
     UFUNCTION(BlueprintCallable, Category = "Health")
     UHealthComponent* GetHealthComponent();
+
+    void SetGrab(bool InGrab) { IsGrab = InGrab; }
 
 private:
     void MoveForward(float Amount);
@@ -51,8 +56,8 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UHealthComponent* HealthComponent;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-    UTextRenderComponent* HealthTextRender;
+    /*UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UTextRenderComponent* HealthTextRender;*/
 
     UPROPERTY(EditDefaultsOnly, Category = "Animation")
     UAnimMontage* AnimDeath;
@@ -60,4 +65,5 @@ protected:
 private:
     bool IsMovingForward = false;
     bool WentsToRun = false;
+    bool IsGrab = false;
 };

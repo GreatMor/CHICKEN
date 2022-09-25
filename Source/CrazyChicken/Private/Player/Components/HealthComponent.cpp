@@ -37,7 +37,7 @@ void UHealthComponent::OnTakeAnyDamageHandle(AActor* DamagedActor, float Damage,
     Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth );
 
     GetWorld()->GetTimerManager().ClearTimer(HealthTimerHandle);
-    OnHealthChange.Broadcast(Health);
+    //OnHealthChange.Broadcast(Health);
      
     if(IsDeath())
     {
@@ -52,7 +52,7 @@ void UHealthComponent::OnTakeAnyDamageHandle(AActor* DamagedActor, float Damage,
 void UHealthComponent::HealthUpdate()
 {    
     Health = FMath::Min(Health+HealthModifier, MaxHealth);
-    OnHealthChange.Broadcast(Health);  
+    //OnHealthChange.Broadcast(Health);  
     
     if(Health == MaxHealth && GetWorld())
     {
@@ -62,8 +62,12 @@ void UHealthComponent::HealthUpdate()
 
 void UHealthComponent::OnOverlapActivateSphere(AActor* MyOverlappedActor, AActor* OtherActor)
 {
-    if (Cast<ABonfire>(OtherActor))
+    ABonfire* OverlapActor = Cast<ABonfire>(OtherActor);
+    if(OverlapActor)
     {
+        if(!OverlapActor->IsBurning())
+            return;
+
         GetWorld()->GetTimerManager().ClearTimer(HealthTimerHandle);
         AutoHealth = true;
         GetWorld()->GetTimerManager().SetTimer(HealthTimerHandle, this, &UHealthComponent::HealthUpdate, HealtUpdateTiame, true, 0);

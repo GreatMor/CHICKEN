@@ -29,6 +29,11 @@ ABonfire::ABonfire()
 	CollisionActivate->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	CollisionActivate->bHiddenInGame = false;
 	CollisionActivate->OnComponentBeginOverlap.AddDynamic(this, &ABonfire::ProlongBurning);
+
+	SM_Ash = CreateDefaultSubobject<UStaticMeshComponent>("Ash");
+	SM_Ash->SetupAttachment(RootComponent);
+	SM_Fierwood = CreateDefaultSubobject<UStaticMeshComponent>("Fierwood");
+	SM_Fierwood->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -37,10 +42,12 @@ void ABonfire::BeginPlay()
 	Super::BeginPlay();	
 
 	CurrentBurningTime = MaxBurningTime;
-	TimeBurning = MaxTimeBurning;
+	TimeBurning = MaxBurningTime;
 
 	if(GetWorld())
 		GetWorld()->GetTimerManager().SetTimer(BurningTimerHandle, this, &ABonfire::Burning, 1, true , 0.5f);
+	if(SM_Ash)
+		SM_Ash->SetHiddenInGame(true);
 }
 
 bool ABonfire::IsBurning()
@@ -62,7 +69,11 @@ void ABonfire::Burning()
 	}
 	else
 	{
-		this->Destroy();
+		CollisionActivate->DestroyComponent();
+		if (SM_Ash)
+			SM_Ash->SetHiddenInGame(false);
+		if(SM_Fierwood)
+			SM_Fierwood->SetHiddenInGame(true);
 		GetWorld()->GetTimerManager().ClearTimer(BurningTimerHandle);
 	}
 }
